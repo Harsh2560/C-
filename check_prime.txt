@@ -1,0 +1,48 @@
+using System;
+
+class UserMainCode
+{
+    public static int luckynumbers(int m, int n)
+    {
+        int count = 0;
+
+        for (int i = m; i <= n; i++)
+        {
+            if (!IsPrime(i))
+            {
+                int sum1 = Sum(i);
+                int sum2 = Sum(i * i);
+
+                if (sum2 == sum1 * sum1)
+                {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    static int Sum(int num)
+    {
+        int s = 0;
+        while (num > 0)
+        {
+            s += num % 10;
+            num /= 10;
+        }
+        return s;
+    }
+
+    static bool IsPrime(int num)
+    {
+        if (num < 2) return false;
+
+        for (int i = 2; i < num; i++)
+        {
+            if (num % i == 0)
+                return false;
+        }
+        return true;
+    }
+}
