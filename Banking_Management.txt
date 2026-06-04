@@ -1,0 +1,116 @@
+using System;
+
+class Account
+{
+    private double balance;
+
+    public int AccountNumber { get; set; }
+    public string CustomerName { get; set; }
+
+    public double Balance
+    {
+        get { return balance; }
+    }
+
+    public Account(int accNo, string name, double initialBalance)
+    {
+        AccountNumber = accNo;
+        CustomerName = name;
+        balance = initialBalance;
+    }
+
+    public void Deposit(double amount)
+    {
+        if (amount > 0)
+        {
+            balance += amount;
+            Console.WriteLine("Deposited: " + amount);
+        }
+        else
+        {
+            Console.WriteLine("Invalid amount");
+        }
+    }
+
+    public virtual void Withdraw(double amount)
+    {
+        if (amount > 0 && amount <= balance)
+        {
+            balance -= amount;
+            Console.WriteLine("Withdrawn: " + amount);
+        }
+        else
+        {
+            Console.WriteLine("Transaction failed");
+        }
+    }
+
+    public void DisplayDetails()
+    {
+        Console.WriteLine("Account Number: " + AccountNumber);
+        Console.WriteLine("Customer Name: " + CustomerName);
+        Console.WriteLine("Balance: " + balance);
+    }
+}
+
+class SavingsAccount : Account
+{
+    public SavingsAccount(int accNo, string name, double balance) 
+        : base(accNo, name, balance)
+    {
+    }
+
+    public override void Withdraw(double amount)
+    {
+        if (amount <= Balance)
+        {
+            base.Withdraw(amount);
+        }
+        else
+        {
+            Console.WriteLine("Cannot withdraw more than balance");
+        }
+    }
+}
+
+class CurrentAccount : Account
+{
+    private double limit = 1000;
+
+    public CurrentAccount(int accNo, string name, double balance) 
+        : base(accNo, name, balance)
+    {
+    }
+
+    public override void Withdraw(double amount)
+    {
+        if (amount <= Balance + limit)
+        {
+            Console.WriteLine("Withdrawn: " + amount);
+        }
+        else
+        {
+            Console.WriteLine("Limit exceeded");
+        }
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        SavingsAccount s = new SavingsAccount(1, "Harsh", 5000);
+        s.DisplayDetails();
+        s.Deposit(1000);
+        s.Withdraw(2000);
+        s.DisplayDetails();
+
+        Console.WriteLine();
+
+        CurrentAccount c = new CurrentAccount(2, "Rahul", 3000);
+        c.DisplayDetails();
+        c.Withdraw(3500);
+        c.DisplayDetails();
+    }
+}
+``

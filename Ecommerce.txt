@@ -1,0 +1,77 @@
+using System;
+
+abstract class Product
+{
+    public int ProductId { get; set; }
+    public string ProductName { get; set; }
+    protected double Price;
+
+    public Product(int id, string name, double price)
+    {
+        ProductId = id;
+        ProductName = name;
+        Price = price;
+    }
+
+    public abstract double CalculateDiscount();
+
+    public void DisplayProduct()
+    {
+        double discount = CalculateDiscount();
+        double finalPrice = Price - discount;
+
+        Console.WriteLine(ProductName);
+        Console.WriteLine("Original Price : " + Price);
+        Console.WriteLine("Discount : " + (discount * 100 / Price) + "%");
+        Console.WriteLine("Final Price : " + finalPrice);
+        Console.WriteLine();
+    }
+}
+
+class Electronics : Product
+{
+    public Electronics(int id, string name, double price) : base(id, name, price)
+    {
+    }
+
+    public override double CalculateDiscount()
+    {
+        return Price * 0.10;
+    }
+}
+
+class Clothing : Product
+{
+    public Clothing(int id, string name, double price) : base(id, name, price)
+    {
+    }
+
+    public override double CalculateDiscount()
+    {
+        return Price * 0.20;
+    }
+}
+
+class Grocery : Product
+{
+    public Grocery(int id, string name, double price) : base(id, name, price)
+    {
+    }
+
+    public override double CalculateDiscount()
+    {
+        return Price * 0.05;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Product p1 = new Electronics(1, "Laptop", 50000);
+        Product p2 = new Clothing(2, "T-Shirt", 1000);
+
+        p1.DisplayProduct();
+        p2.DisplayProduct();
+    }
+}
