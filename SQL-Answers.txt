@@ -1,0 +1,66 @@
+
+Q1 SELECT member_id,member_name,city,membership_status FROM lms_members WHERE membership_status='Permanent';
+------
+Q2 SELECT DISTINCT m.member_id,m.member_name FROM lms_members m JOIN lms_book_issue b ON m.member_id=b.member_id WHERE b.book_issue_status='N';
+------
+Q3 SELECT m.member_id,m.member_name FROM lms_members m JOIN lms_book_issue b ON m.member_id=b.member_id WHERE b.book_code='BL000002';
+------
+Q4 SELECT book_code,book_title,author FROM lms_book_details WHERE author LIKE 'P%';
+------
+Q5 SELECT COUNT(*) NO_OF_BOOKS FROM lms_book_details WHERE category='JAVA';
+------
+Q6 SELECT category,COUNT(*) NO_OF_BOOKS FROM lms_book_details GROUP BY category;
+------
+Q7 SELECT COUNT(*) NO_OF_BOOKS FROM lms_book_details WHERE publisher='Prentice Hall';
+------
+Q8 SELECT b.book_code,d.book_title FROM lms_book_issue b JOIN lms_book_details d ON b.book_code=d.book_code WHERE b.date_of_issue=TO_DATE('01-APR-2012','DD-MON-YYYY');
+------
+Q9 SELECT member_id,member_name,date_of_registration,expiry_date FROM lms_members WHERE expiry_date<TO_DATE('01-APR-2013','DD-MON-YYYY');
+------
+Q10 SELECT member_id,member_name,date_of_registration,membership_status FROM lms_members WHERE date_of_registration<TO_DATE('01-MAR-2012','DD-MON-YYYY') AND membership_status='Temporary';
+------
+Q11 SELECT member_id,INITCAP(member_name) Name FROM lms_members WHERE city IN ('CHENNAI','DELHI');
+------
+Q12 SELECT DISTINCT book_title||'_is_written_by_'||author BOOK_WRITTEN_BY FROM lms_book_details;
+------
+Q13 SELECT AVG(price) AVERAGEPRICE FROM lms_book_details WHERE category='JAVA';
+------
+Q14 SELECT supplier_id,supplier_name,email FROM lms_suppliers_details WHERE email LIKE '%gmail.com';
+------
+Q15 SELECT supplier_id,supplier_name,COALESCE(phone,email,address) CONTACTDETAILS FROM lms_suppliers_details;
+------
+Q16 SELECT supplier_id,supplier_name,NVL2(phone,'Yes','No') PHONENUMAVAILABLE FROM lms_suppliers_details;
+------
+Q17 SELECT m.member_id,m.member_name,b.book_code,d.book_title FROM lms_members m JOIN lms_book_issue b ON m.member_id=b.member_id JOIN lms_book_details d ON b.book_code=d.book_code;
+------
+Q18 SELECT COUNT(*) NO_OF_BOOKS_AVAILABLE FROM lms_book_details WHERE book_code NOT IN (SELECT book_code FROM lms_book_issue WHERE book_issue_status='Y');
+------
+Q19 SELECT m.member_id,m.member_name,f.fine_range,f.fine_amount FROM lms_members m JOIN lms_fine_details f ON m.member_id=f.member_id WHERE f.fine_amount<100;
+------
+Q20 SELECT d.book_code,d.book_title,b.book_issue_status AVAILABILITYSTATUS FROM lms_book_details d LEFT JOIN lms_book_issue b ON d.book_code=b.book_code WHERE d.category='JAVA' AND d.edition=6;
+------
+Q21 SELECT book_code,book_title,rack_num FROM lms_book_details WHERE rack_num='A1' ORDER BY book_title;
+------
+Q22 SELECT m.member_id,m.member_name,b.date_return,b.date_returned FROM lms_members m JOIN lms_book_issue b ON m.member_id=b.member_id WHERE b.date_returned>b.date_return;
+------
+Q23 SELECT member_id,member_name,date_of_registration FROM lms_members WHERE member_id NOT IN (SELECT member_id FROM lms_book_issue);
+------
+Q24 SELECT member_id,member_name FROM lms_members WHERE member_id NOT IN (SELECT member_id FROM lms_fine_details WHERE EXTRACT(YEAR FROM fine_date)=2012);
+------
+Q25 SELECT date_of_issue,COUNT(*) NOOFBOOKS FROM lms_book_issue GROUP BY date_of_issue HAVING COUNT(*)=(SELECT MAX(COUNT(*)) FROM lms_book_issue GROUP BY date_of_issue);
+------
+Q26 SELECT book_title,supplier_id FROM lms_book_details WHERE author='Herbert Schildt' AND edition=5 AND supplier_id='S01';
+------
+Q27 SELECT rack_num,COUNT(*) NOOFBOOKS FROM lms_book_details GROUP BY rack_num ORDER BY rack_num;
+------
+Q28 SELECT b.book_issue_no,m.member_name,m.date_of_registration,m.expiry_date,d.book_title,d.category,d.author,d.price,b.date_of_issue,b.date_return,b.date_returned,b.book_issue_status,f.fine_amount FROM lms_book_issue b JOIN lms_members m ON b.member_id=m.member_id JOIN lms_book_details d ON b.book_code=d.book_code LEFT JOIN lms_fine_details f ON m.member_id=f.member_id;
+------
+Q29 SELECT book_code,book_title,publish_date FROM lms_book_details WHERE TO_CHAR(publish_date,'MON')='DEC';
+------
+Q30 SELECT d.book_code,d.book_title,b.book_issue_status AVAILABILITYSTATUS FROM lms_book_details d LEFT JOIN lms_book_issue b ON d.book_code=b.book_code WHERE d.category='JAVA' AND d.edition=5;
+------
+Q31 SELECT d.book_code,d.book_title,s.supplier_name FROM lms_book_details d JOIN lms_suppliers_details s ON d.supplier_id=s.supplier_id WHERE d.supplier_id=(SELECT supplier_id FROM lms_book_details GROUP BY supplier_id HAVING COUNT(*)=(SELECT MAX(COUNT(*)) FROM lms_book_details GROUP BY supplier_id));
+------
+Q32 SELECT m.member_id,m.member_name,(3-COUNT(b.book_code)) REMAININGBOOKS FROM lms_members m LEFT JOIN lms_book_issue b ON m.member_id=b.member_id AND b.book_issue_status='N' GROUP BY m.member_id,m.member_name;
+------
+Q33 SELECT supplier_id,supplier_name FROM lms_suppliers_details WHERE supplier_id=(SELECT supplier_id FROM lms_book_details GROUP BY supplier_id HAVING COUNT(*)=(SELECT MIN(COUNT(*)) FROM lms_book_details GROUP BY supplier_id));
